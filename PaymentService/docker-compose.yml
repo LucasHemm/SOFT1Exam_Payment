@@ -3,4 +3,4 @@
     image: paymentservice
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: PaymentService/Dockerfile
