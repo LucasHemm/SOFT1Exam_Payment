@@ -43,18 +43,12 @@ public class PaymentApi: ControllerBase
         try
         {
             var payment = _paymentFacade.GetPaymentById(id);
-        
-            if (payment == null)
-            {
-                return NotFound("Payment not found.");
-            }
-
             var paymentDto = new PaymentDTO(payment);
             return Ok(paymentDto);
         }
         catch (Exception e)
         {
-            return BadRequest(e.Message);
+            return NotFound("Payment not found.");
         }
     }
 
