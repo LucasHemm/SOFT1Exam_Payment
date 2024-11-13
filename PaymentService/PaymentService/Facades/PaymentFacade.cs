@@ -34,27 +34,26 @@ public class PaymentFacade
         return payment;
     }
 
-    private PaymentProcessInfo CreatePaymentProcessInfo(double totalPrice, double agentRating)
+    public PaymentProcessInfo CreatePaymentProcessInfo(double totalPrice, double agentRating)
     {
-        double agentfee = totalPrice * (Math.Round(agentRating) / 100);
-        
-        double mtogofee;
-        switch (totalPrice)
-        {
-            case <=100:
-                mtogofee = totalPrice * 0.06;
-                break;
-            case <=500:
-                mtogofee = totalPrice * 0.05;
-                break;
-            case <=1000:
-                mtogofee = totalPrice * 0.04;
-                break;
-            default:
-                mtogofee = totalPrice * 0.03;
-                break;
-        }
-        
-        return new PaymentProcessInfo(totalPrice - mtogofee - agentfee, agentfee, mtogofee);
+        if (agentRating < 0 || agentRating > 5)
+            throw new ArgumentOutOfRangeException(nameof(agentRating), "Agent rating must be between 0 and 5 inclusive.");
+
+        double agentBonus = totalPrice * (Math.Round(agentRating) / 100);
+
+        double mtogoFee;
+        if (totalPrice <= 100)
+            mtogoFee = totalPrice * 0.06;
+        else if (totalPrice <= 500)
+            mtogoFee = totalPrice * 0.05;
+        else if (totalPrice <= 1000)
+            mtogoFee = totalPrice * 0.04;
+        else
+            mtogoFee = totalPrice * 0.03;
+
+        double resFee = (totalPrice - mtogoFee) - agentBonus;
+
+        return new PaymentProcessInfo(resFee, agentBonus, mtogoFee);
     }
+
 }
