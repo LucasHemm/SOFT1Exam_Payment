@@ -123,7 +123,6 @@ namespace PaymentServiceTest
             var paymentDto = await response.Content.ReadFromJsonAsync<PaymentDTO>();
             Assert.NotNull(paymentDto);
             Assert.Equal(createRequest.TotalPrice, paymentDto.TotalPrice);
-            
         }
 
         [Fact]
