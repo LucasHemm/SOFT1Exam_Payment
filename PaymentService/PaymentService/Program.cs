@@ -40,7 +40,7 @@ public class Program
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-            // Apply any pending migrations and create the database if it doesn't exist
+            // Apply any pending migrations and create the database if it doesn't exist test for dockerhub
             try
             {
                 dbContext.Database.Migrate();
