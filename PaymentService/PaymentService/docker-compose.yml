@@ -24,7 +24,7 @@ services:
     environment:
       - ASPNETCORE_URLS=http://0.0.0.0:8080
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=paymentservicedb;Database=Order;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;
+      - ConnectionStrings__DefaultConnection=Server=paymentservicedb;Database=paymentservice;User Id=sa;Password=yourStrong(!)Password;TrustServerCertificate=True;
     ports:
       - "8084:8080"
     depends_on:
