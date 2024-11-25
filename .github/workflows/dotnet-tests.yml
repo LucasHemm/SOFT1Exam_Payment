@@ -38,9 +38,9 @@ jobs:
         if: success()
         working-directory: PaymentService/PaymentService
         run: |
-          docker build -t lucashemcph/soft1exam_PaymentService:latest .
+          docker build -t lucashemcph/soft1exam_paymentservice:latest .
 
       - name: Push Docker image
         if: success()
         run: |
-          docker push lucashemcph/soft1exam_PaymentService:latest
+          docker push lucashemcph/soft1exam_paymentservice:latest
