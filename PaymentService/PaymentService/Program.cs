@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Facades;
+using Prometheus;
 
 namespace PaymentService;
 
@@ -51,7 +52,11 @@ public class Program
         }
 
         app.UseCors("AllowAll");
-        app.UseHttpsRedirection();
+        
+        app.UseRouting();
+        app.UseMetricServer(); // Default /metrics endpoint
+        app.UseHttpMetrics(); // Enable HttpMetrics
+        
         app.UseAuthorization();
         app.MapControllers();
 

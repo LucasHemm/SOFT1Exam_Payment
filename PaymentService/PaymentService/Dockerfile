@@ -1,22 +1,31 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
-USER $APP_UID
+﻿# Use the official .NET Core SDK as the build environment
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
+# Set ASP.NET Core to listen on port 8080
+ENV ASPNETCORE_URLS=http://0.0.0.0:8080
+ENV ASPNETCORE_ENVIRONMENT=Development
+
+# Use the .NET Core SDK to build the project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["PaymentService/PaymentService.csproj", "PaymentService/"]
-RUN dotnet restore "PaymentService/PaymentService.csproj"
+
+# Copy the .csproj file and restore any dependencies
+COPY ["PaymentService.csproj", "./"]
+RUN dotnet restore "./PaymentService.csproj"
+
+# Copy the rest of your source code
 COPY . .
-WORKDIR "/src/PaymentService"
-RUN dotnet build "PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
+# Build the project
+RUN dotnet build "PaymentService.csproj" -c Release -o /app/build
+
+# Publish the app to a directory for deployment
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "PaymentService.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "PaymentService.csproj" -c Release -o /app/publish
 
+# Use the base image to run the app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
